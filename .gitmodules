@@ -1,0 +1,3 @@
+[submodule "src/Architect/GitSubmodule/Chat"]
+	path = src/Architect/GitSubmodule/Chat
+	url = https://github.com/daviad/Chat.git
