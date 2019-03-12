@@ -33,18 +33,18 @@ struct DBConstants {
 
 extension FMResultSet {
     //将close封装起来以免遗漏
-    fileprivate func enumerate(_ modelType: (Model).Type, _ results: inout [Model]) {
+    fileprivate func enumerate<T: Model>(_ modelType: T.Type, _ results: inout [T]) {
         while self.next() {
             let dic = self.resultDictionary as? [String : Any]
             if let model = modelType.deserialize(from: dic) {
-                results.append(model as Model)
+                results.append(model as T)
             }
         }
         self.close()
     }
     
-    func arrayOfModelType(_ modelType: Model.Type) -> [Model] {
-        var results = [Model]()
+    func arrayOfModelType<T: Model>(_ modelType: T.Type) -> [T] {
+        var results = [T]()
         enumerate(modelType, &results)
         return results
     }
@@ -54,7 +54,7 @@ extension Dictionary {
     //    func
 }
 
-struct DBHelper {
+final class DBHelper {
     
     let dbQueue: FMDatabaseQueue
     let executionQueue = DispatchQueue(label: "DAO-excute-queue", attributes: .concurrent)
@@ -67,15 +67,93 @@ struct DBHelper {
     static func buildCreateTableSql(dbModel: DBModel.Type, dbName: String) -> String {
         let tableName = dbModel.dbTableName
         let cls = dbModel.dbColumns
-        var lines = ""
+        var lines = [String]()
         _ = cls.map { (k, v) in
             lines.append("\(k) \(v)")
         }
+        var lineStr = lines.joined(separator: ",")
         if let pks = dbModel.dbPrimaryKeys {
-            lines = "\(lines) PRIMARY KEY (\(pks.joined(separator: ","))) "
+            lineStr = "\(lineStr), PRIMARY KEY (\(pks.joined(separator: ","))) "
         }
-        let sql = "CREATE TABLE IF NOT EXISTS \(dbName).\(tableName) (\(lines)) "
+        let sql = "CREATE TABLE IF NOT EXISTS \(dbName).\(tableName) (\(lineStr)) "
         return sql
+    }
+    
+    func upgradeSpecific<T: Model>(modelType: T.Type, dbName: String, db: FMDatabase) {
+        let w = ["name":modelType.dbTableName]
+        let sql = Sql.select(dbName:dbName).table(DBModelVersion.dbTableName).andWhere(Array(w.keys)).build()
+        if let set = db.executeQuery(sql, withParameterDictionary: w) {
+            var results = [T]()
+            set.enumerate(modelType, &results)
+            if let version = results.first {
+                modelType.dbUpgrade(from: (version as! DBModelVersion).version, dbName: dbName, db: db)
+            }
+        }
+    }
+    
+    func getDBModelVersion(dbName: String, completion: @escaping ([DBModelVersion]?)->(Void)) {
+        let dao = BaseDao()
+        dao.queryModel(DBModelVersion.self) { completion($0) }
+    }
+    
+    
+    /// 对比version 看是否需要升级。 此操作是基础的并且需要在最前面完成的，所有放在了一个 block中完成。
+    ///
+    /// - Parameters:
+    ///   - dbModel: <#dbModel description#>
+    ///   - dbName: <#dbName description#>
+    func upgradeTable<T: Model>(dbModel: T.Type, dbName: String) {
+
+        self.dbQueue.inDatabase { (db) in
+    
+            let versionSql = Sql.select(dbName: dbName).table(DBModelVersion.dbTableName).build()
+            var rs :FMResultSet? = nil
+            
+            let task = {
+                let sql = "PRAGMA \(dbName).table_info('\(dbModel.dbTableName)')"
+                do {
+                    rs = try db.executeQuery(sql, values: nil)
+                    var columns = Set<String>()
+                    while((rs?.next())!) {
+                        if let column = rs?.string(forColumn: "name") {
+                            columns.insert(column)
+                        }
+                    }
+                    let existColumns = Set(dbModel.dbColumns.keys)
+                    columns.subtract(existColumns)
+                    
+                    _ = columns.map {
+                        let alterSql = "ALTER TABLE \(dbModel.dbTableName) ADD COLUMN \($0) \(dbModel.dbColumns[$0]?.rawValue ?? "") "
+                        _ = try? db.executeUpdate(alterSql, values: nil)
+                    }
+                    self.upgradeSpecific(modelType: dbModel, dbName: dbName, db: db)
+                } catch {
+                    print(db.lastErrorMessage())
+                }
+            }
+            
+            let updateVersion = {
+                let update = Sql.insert(dbName: dbName).build()
+                try? db.executeUpdate(update, values: nil)
+            }
+            
+            do {
+                rs = try db.executeQuery(versionSql, values: nil)
+                if let version = rs?.arrayOfModelType(DBModelVersion.self).first {
+                    if version.version != dbModel.dbVersion {
+                        task()
+                        updateVersion()
+                    }
+                } else {
+                    task()
+                    updateVersion()
+                }
+            } catch {
+                print(db.lastErrorMessage())
+            }
+     
+        }
+     
     }
     
     func insertModel(_ model: Model, dbName: String, needBarrier: Bool = false, completion: ((Bool)->())?) {
@@ -199,38 +277,34 @@ struct DBHelper {
         }
     }
     
-    func queryModel(_ modelType: Model.Type, dbName: String, completion: (([Model]?)->())?) {
+    func queryModel<T: Model>(_ modelType: T.Type, dbName: String, completion: @escaping (([T]?)->())) {
         let sql = Sql.select(dbName: dbName).table(modelType.dbTableName).build()
         executionQueue.async {
             self.dbQueue.inDatabase { (db) in
                 do {
-                    if let completion = completion {
                         let set = try db.executeQuery(sql, values: nil)
                         completion(set.arrayOfModelType(modelType))
-                    }
                 } catch {
                     print(db.lastErrorMessage())
-                    if let completion = completion {
                         completion(nil)
-                    }
                 }
             }
         }
     }
     
     /// where dictionary(key:colum'name,value 是对应的条件值) 多个值之间用 and
-    func queryModel(_ modelType: Model.Type, dbName: String, whereDic: [String:String], completion: (([Model]?)->())?) {
+    func queryModel<T: Model>(_ modelType: T.Type, dbName: String, whereDic: [String:String], completion: (([T]?)->())?) {
         let sql = Sql.select(dbName: dbName).table(modelType.dbTableName).andWhere(Array(whereDic.keys)).build()
         query(sql: sql, modelType: modelType, paramDic: whereDic, completion: completion)
     }
     
     /// where dictionary(key:colum'name,value 是对应的条件值) 多个值之间用 OR
-    func queryModel(_ modelType: Model.Type, dbName: String, whereOrDic: [String:String], completion: (([Model]?)->())?) {
+    func queryModel<T: Model>(_ modelType: T.Type, dbName: String, whereOrDic: [String:String], completion: (([T]?)->())?) {
         let sql = Sql.select(dbName: dbName).table(modelType.dbTableName).orWhere(Array(whereOrDic.keys)).build()
         query(sql: sql, modelType: modelType, paramDic: whereOrDic, completion: completion)
     }
     
-    func query(sql: String, modelType: Model.Type, paramDic: [String : Any],  completion: (([Model]?)->())?) {
+    func query<T: Model>(sql: String, modelType: T.Type, paramDic: [String : Any],  completion: (([T]?)->())?) {
         executionQueue.async {
             self.dbQueue.inDatabase { (db) in
                 if let completion = completion {

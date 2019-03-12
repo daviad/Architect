@@ -11,7 +11,7 @@ import HandyJSON
 
 typealias Model = HandyJSON & DBModel
 
-struct BaseDao {
+class BaseDao {
     let accessor = ResAccessor.init(role: .All)
 
     func insertModel(_ model: Model, completion: ((Bool)->())?) {
@@ -27,9 +27,12 @@ struct BaseDao {
     }
     
     
-    func queryModel(_ modelType: Model.Type, completion: (([Model]?)->())?) {
-        DBHelper.shared.queryModel(modelType, dbName: accessor.role.rawValue, completion: completion)
+    func queryModel<T: Model>(_ modelType: T.Type, completion: @escaping (([T]?)->())) {
+        DBHelper.shared.queryModel(modelType, dbName: accessor.role.rawValue) { ([T]?) in
+            
+        }
     }
+
     
     /// where string
     func queryModel(_ modelType: Model.Type, where: String, completion: (([Model]?)->())?) {

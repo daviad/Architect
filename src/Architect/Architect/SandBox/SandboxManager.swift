@@ -67,8 +67,6 @@ final class SandboxManager {
             dir = cacheDir
         case .tmp:
             dir = tmpDir
-        default:
-            dir = nil
         }
         if let dirTmp = dir {
            dir = buildFolderPath(dirTmp, folderName)

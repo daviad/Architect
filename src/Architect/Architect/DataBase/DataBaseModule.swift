@@ -7,20 +7,20 @@
 //
 
 import Foundation
+
+/// 完成数据库模块的加载、设置，及数据库及数据库表的配置、创建、升级、清理
 final class DataBaseModule: ModuleProtocl {
     
     func load() {
-        
     }
     func setup() {
-        
-// 创建数据库 路径，
-//      根据 注册的module 创建对应模型的 数据库
-        configDBQueue()
+        configDB()
         createDB()
+        crateTables()
+        dbUpgrade()
     }
     
-    func configDBQueue() {
+    func configDB() {
         DBHelper.shared.executionQueue.async(flags: .barrier) {
             DBHelper.shared.dbQueue.inDatabase { $0.shouldCacheStatements = true}
         }
@@ -37,8 +37,8 @@ final class DataBaseModule: ModuleProtocl {
             DBHelper.shared.dbQueue.inDatabase {
                 do {
                     var  dbPath = SandboxManager.shared.buildFolderPath(type: .document, "db")!
-                    dbPath = (dbPath as NSString).appendingPathComponent("1.db")
-                    try $0.executeUpdate("ATTACH DATABASE '\(dbPath)' as \("pub") ", values: nil)
+                    dbPath = (dbPath as NSString).appendingPathComponent("\(String(AppSession.shared.user.id)).db")
+                    try $0.executeUpdate("ATTACH DATABASE '\(dbPath)' as \("\(AppSession.shared.accessor.role.rawValue)") ", values: nil)
                 } catch  {
                     print($0.lastErrorMessage())
                 }
@@ -47,15 +47,13 @@ final class DataBaseModule: ModuleProtocl {
     }
     
     func crateTables() {
-        _ = ModuleManager.shared.modules.map { modules in
-            if let models = modules.dbModels {
+        _ = ModuleManager.shared.modules.map { module in
+            if let models = module.dbModels {
                 _ = models.map { m in
-                    let sql = DBHelper.buildCreateTableSql(dbModel: type(of: m), dbName: "pub")
+                    let sql = DBHelper.buildCreateTableSql(dbModel: type(of: m), dbName: AppSession.shared.accessor.role.rawValue)
                     DBHelper.shared.executionQueue.async(flags: .barrier) {
-                        DBHelper.shared.executionQueue.async(flags: .barrier) {
-                            DBHelper.shared.dbQueue.inDatabase {
-                                try? $0.executeUpdate(sql, values: nil)
-                            }
+                        DBHelper.shared.dbQueue.inDatabase {
+                            try? $0.executeUpdate(sql, values: nil)
                         }
                     }
                 }
@@ -63,4 +61,19 @@ final class DataBaseModule: ModuleProtocl {
         }
     }
     
+    func dbUpgrade() {
+        _ = ModuleManager.shared.modules.map { module in
+            if let models = module.dbModels {
+                _ = models.map { m in
+                    DBHelper.shared.executionQueue.async(flags: .barrier) {
+//                        DBHelper.shared.upgradeTable(dbModel: type(of: m), dbName: AppSession.shared.accessor.role.rawValue)
+                    }
+                }
+            }
+        }
+    }
+    
+    var dbModels: [DBModel]? {
+        return [DBModelVersion()]
+    }
 }

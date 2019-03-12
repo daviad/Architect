@@ -1,5 +1,5 @@
 //
-//  AccountModule.swift
+//  UserModule.swift
 //  Architect
 //
 //  Created by  dingxiuwei on 2019/2/28.
@@ -7,13 +7,12 @@
 //
 
 import Foundation
-class AccountModule: ModuleProtocl {
-    var dbModels: [DBModel] {
-        return [Account()]
+class UserModule: ModuleProtocl {
+    var dbModels: [DBModel]? {
+        return [User()]
     }
     
     func load() {
-        
     }
     
 }

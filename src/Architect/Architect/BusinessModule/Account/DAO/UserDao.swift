@@ -1,5 +1,5 @@
 //
-//  AccountDao.swift
+//  UserDao.swift
 //  Architect
 //
 //  Created by  dingxiuwei on 2019/3/4.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct AccountDao {
+struct UserDao {
     
 }

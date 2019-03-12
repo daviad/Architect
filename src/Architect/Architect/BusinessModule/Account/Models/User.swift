@@ -1,5 +1,5 @@
 //
-//  Account.swift
+//  User.swift
 //  Architect
 //
 //  Created by  dingxiuwei on 2019/3/4.
@@ -15,7 +15,7 @@ enum Gender: UInt8, HandyJSONEnum {
     case Female = 2
 }
 
-struct Account: HandyJSON {
+struct User: HandyJSON {
     var name: String!
     var id: Int!
     var age: Int?
@@ -23,13 +23,13 @@ struct Account: HandyJSON {
     var vip: Bool = false
 }
 
-extension Account: DBModel {
+extension User: DBModel {
     static var dbVersion: Int {
-        return 1
+        return 0
     }
     
     static var dbTableName: String {
-        return "account"
+        return "user"
     }
     
     static var dbColumns: Dictionary<String, DBConstants.DataType> {
@@ -41,4 +41,8 @@ extension Account: DBModel {
             "vip"     : .bool
         ]
     }
+    static var dbPrimaryKeys: [String]? {
+        return ["id"]
+    }
+
 }

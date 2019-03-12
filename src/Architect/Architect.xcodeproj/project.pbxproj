@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		4CD7C285C3DC7CEF8C8D57A4 /* Pods_Architect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8431F38BFC32DE27071B9D6 /* Pods_Architect.framework */; };
 		B93911432230EA56007C7473 /* NetworkingModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93911422230EA56007C7473 /* NetworkingModule.swift */; };
-		B939114822310EA6007C7473 /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B939114722310EA6007C7473 /* AccountViewModel.swift */; };
+		B939114822310EA6007C7473 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B939114722310EA6007C7473 /* UserViewModel.swift */; };
 		B98346072227C9F400C4CA97 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98346062227C9F400C4CA97 /* AppDelegate.swift */; };
 		B98346092227C9F400C4CA97 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98346082227C9F400C4CA97 /* ViewController.swift */; };
 		B983460E2227C9F500C4CA97 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B983460D2227C9F500C4CA97 /* Assets.xcassets */; };
@@ -18,7 +18,7 @@
 		B98346272227C9F500C4CA97 /* ArchitectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98346262227C9F500C4CA97 /* ArchitectUITests.swift */; };
 		B983463B2227CF4100C4CA97 /* ModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B983463A2227CF4100C4CA97 /* ModuleManager.swift */; };
 		B98346412227D29A00C4CA97 /* ModulesProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98346402227D29A00C4CA97 /* ModulesProtocol.swift */; };
-		B98346432227D3B100C4CA97 /* AccountModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98346422227D3B100C4CA97 /* AccountModule.swift */; };
+		B98346432227D3B100C4CA97 /* UserModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98346422227D3B100C4CA97 /* UserModule.swift */; };
 		B98346462227D78100C4CA97 /* MainPageModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98346452227D78100C4CA97 /* MainPageModule.swift */; };
 		B98346482227D98500C4CA97 /* AppDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98346472227D98500C4CA97 /* AppDelegateProtocol.swift */; };
 		B983464A2227D9C300C4CA97 /* DataBaseModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98346492227D9C300C4CA97 /* DataBaseModule.swift */; };
@@ -33,12 +33,14 @@
 		B9C6B1C422290CDE007C172A /* OCTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B9C6B1C322290CDE007C172A /* OCTest.m */; };
 		B9C6B1CE22291BC3007C172A /* ResAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C6B1CD22291BC3007C172A /* ResAccessor.swift */; };
 		B9C6B1D022291DDC007C172A /* SandboxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C6B1CF22291DDC007C172A /* SandboxManager.swift */; };
-		B9D768A7222CB8C9008C5EB9 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D768A6222CB8C8008C5EB9 /* Account.swift */; };
+		B9D768A7222CB8C9008C5EB9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D768A6222CB8C8008C5EB9 /* User.swift */; };
 		B9D768AD222CBD4C008C5EB9 /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D768AC222CBD4C008C5EB9 /* DBHelper.swift */; };
-		B9D768B1222CECDD008C5EB9 /* AccountDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D768B0222CECDD008C5EB9 /* AccountDao.swift */; };
+		B9D768B1222CECDD008C5EB9 /* UserDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D768B0222CECDD008C5EB9 /* UserDao.swift */; };
 		B9D768B3222CED2B008C5EB9 /* BaseDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D768B2222CED2B008C5EB9 /* BaseDao.swift */; };
 		B9D768B5222D2A84008C5EB9 /* SqlStatement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D768B4222D2A84008C5EB9 /* SqlStatement.swift */; };
 		B9D9F844222E0D6C002BDB9F /* Dictionary+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D9F843222E0D6C002BDB9F /* Dictionary+extension.swift */; };
+		B9EDAF792237434D00A00E31 /* ModelVersionDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EDAF782237434D00A00E31 /* ModelVersionDao.swift */; };
+		B9FD6F132235F163008EE857 /* DBModelVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FD6F122235F163008EE857 /* DBModelVersion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +63,7 @@
 /* Begin PBXFileReference section */
 		55BFE8BD262C6C7B7632ACE5 /* Pods-Architect.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Architect.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Architect/Pods-Architect.debug.xcconfig"; sourceTree = "<group>"; };
 		B93911422230EA56007C7473 /* NetworkingModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingModule.swift; sourceTree = "<group>"; };
-		B939114722310EA6007C7473 /* AccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
+		B939114722310EA6007C7473 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		B98346032227C9F400C4CA97 /* Architect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Architect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B98346062227C9F400C4CA97 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B98346082227C9F400C4CA97 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -76,7 +78,7 @@
 		B98346282227C9F500C4CA97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B983463A2227CF4100C4CA97 /* ModuleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleManager.swift; sourceTree = "<group>"; };
 		B98346402227D29A00C4CA97 /* ModulesProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesProtocol.swift; sourceTree = "<group>"; };
-		B98346422227D3B100C4CA97 /* AccountModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModule.swift; sourceTree = "<group>"; };
+		B98346422227D3B100C4CA97 /* UserModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModule.swift; sourceTree = "<group>"; };
 		B98346452227D78100C4CA97 /* MainPageModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageModule.swift; sourceTree = "<group>"; };
 		B98346472227D98500C4CA97 /* AppDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateProtocol.swift; sourceTree = "<group>"; };
 		B98346492227D9C300C4CA97 /* DataBaseModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseModule.swift; sourceTree = "<group>"; };
@@ -100,12 +102,14 @@
 		B9C6B1C722290EF3007C172A /* Architect-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Architect-Bridging-Header.h"; sourceTree = "<group>"; };
 		B9C6B1CD22291BC3007C172A /* ResAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResAccessor.swift; sourceTree = "<group>"; };
 		B9C6B1CF22291DDC007C172A /* SandboxManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxManager.swift; sourceTree = "<group>"; };
-		B9D768A6222CB8C8008C5EB9 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		B9D768A6222CB8C8008C5EB9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B9D768AC222CBD4C008C5EB9 /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
-		B9D768B0222CECDD008C5EB9 /* AccountDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDao.swift; sourceTree = "<group>"; };
+		B9D768B0222CECDD008C5EB9 /* UserDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDao.swift; sourceTree = "<group>"; };
 		B9D768B2222CED2B008C5EB9 /* BaseDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDao.swift; sourceTree = "<group>"; };
 		B9D768B4222D2A84008C5EB9 /* SqlStatement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqlStatement.swift; sourceTree = "<group>"; };
 		B9D9F843222E0D6C002BDB9F /* Dictionary+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+extension.swift"; sourceTree = "<group>"; };
+		B9EDAF782237434D00A00E31 /* ModelVersionDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelVersionDao.swift; sourceTree = "<group>"; };
+		B9FD6F122235F163008EE857 /* DBModelVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBModelVersion.swift; sourceTree = "<group>"; };
 		BCC904C2B39C77AB99876430 /* Pods-Architect.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Architect.release.xcconfig"; path = "Pods/Target Support Files/Pods-Architect/Pods-Architect.release.xcconfig"; sourceTree = "<group>"; };
 		E8431F38BFC32DE27071B9D6 /* Pods_Architect.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Architect.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -156,7 +160,7 @@
 		B939114622310E79007C7473 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				B939114722310EA6007C7473 /* AccountViewModel.swift */,
+				B939114722310EA6007C7473 /* UserViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -239,7 +243,7 @@
 				B939114622310E79007C7473 /* ViewModels */,
 				B9D768AF222CECB7008C5EB9 /* DAO */,
 				B9D768AE222CEC82008C5EB9 /* Models */,
-				B98346422227D3B100C4CA97 /* AccountModule.swift */,
+				B98346422227D3B100C4CA97 /* UserModule.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -269,6 +273,8 @@
 				B9D768AC222CBD4C008C5EB9 /* DBHelper.swift */,
 				B9D768B2222CED2B008C5EB9 /* BaseDao.swift */,
 				B9D768B4222D2A84008C5EB9 /* SqlStatement.swift */,
+				B9FD6F122235F163008EE857 /* DBModelVersion.swift */,
+				B9EDAF782237434D00A00E31 /* ModelVersionDao.swift */,
 			);
 			path = DataBase;
 			sourceTree = "<group>";
@@ -354,7 +360,7 @@
 		B9D768AE222CEC82008C5EB9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				B9D768A6222CB8C8008C5EB9 /* Account.swift */,
+				B9D768A6222CB8C8008C5EB9 /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -362,7 +368,7 @@
 		B9D768AF222CECB7008C5EB9 /* DAO */ = {
 			isa = PBXGroup;
 			children = (
-				B9D768B0222CECDD008C5EB9 /* AccountDao.swift */,
+				B9D768B0222CECDD008C5EB9 /* UserDao.swift */,
 			);
 			path = DAO;
 			sourceTree = "<group>";
@@ -573,12 +579,13 @@
 				B98346462227D78100C4CA97 /* MainPageModule.swift in Sources */,
 				B9C6B1BA22290C8D007C172A /* FMDatabase.m in Sources */,
 				B983464E2227DC2500C4CA97 /* RootViewController.swift in Sources */,
-				B9D768A7222CB8C9008C5EB9 /* Account.swift in Sources */,
+				B9D768A7222CB8C9008C5EB9 /* User.swift in Sources */,
 				B983464A2227D9C300C4CA97 /* DataBaseModule.swift in Sources */,
+				B9FD6F132235F163008EE857 /* DBModelVersion.swift in Sources */,
 				B9C6B1BC22290C8D007C172A /* FMResultSet.m in Sources */,
 				B9C6B1CE22291BC3007C172A /* ResAccessor.swift in Sources */,
 				B9C6B1C422290CDE007C172A /* OCTest.m in Sources */,
-				B9D768B1222CECDD008C5EB9 /* AccountDao.swift in Sources */,
+				B9D768B1222CECDD008C5EB9 /* UserDao.swift in Sources */,
 				B93911432230EA56007C7473 /* NetworkingModule.swift in Sources */,
 				B9D768AD222CBD4C008C5EB9 /* DBHelper.swift in Sources */,
 				B9C6B1B822290C8D007C172A /* FMDatabaseQueue.m in Sources */,
@@ -590,10 +597,11 @@
 				B9C6B1B922290C8D007C172A /* FMDatabaseAdditions.m in Sources */,
 				B9D768B5222D2A84008C5EB9 /* SqlStatement.swift in Sources */,
 				B98346482227D98500C4CA97 /* AppDelegateProtocol.swift in Sources */,
-				B939114822310EA6007C7473 /* AccountViewModel.swift in Sources */,
+				B939114822310EA6007C7473 /* UserViewModel.swift in Sources */,
 				B98346072227C9F400C4CA97 /* AppDelegate.swift in Sources */,
 				B9D768B3222CED2B008C5EB9 /* BaseDao.swift in Sources */,
-				B98346432227D3B100C4CA97 /* AccountModule.swift in Sources */,
+				B9EDAF792237434D00A00E31 /* ModelVersionDao.swift in Sources */,
+				B98346432227D3B100C4CA97 /* UserModule.swift in Sources */,
 				B98346412227D29A00C4CA97 /* ModulesProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

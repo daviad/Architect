@@ -77,7 +77,7 @@ class Sql {
         var sql :String = String()
         guard let wh = where_ else {
             if let andWhere = andWhere_ {
-                sql.append(" 1 = 1 ")
+                sql.append(" where 1 = 1 ")
                 _ = andWhere.map {
                     let line = " AND \($0) = :\($0) "
                     sql.append(line)
@@ -87,7 +87,7 @@ class Sql {
                 if andWhere_ != nil {
                     
                 } else {
-                    sql.append(" 1 = 2 ")
+                    sql.append(" where 1 = 2 ")
                 }
                 _ = orWhere.map {
                     let line = " OR \($0) = :\($0) "
@@ -113,7 +113,7 @@ final class SqlSelect: Sql {
     private(set) var limitCount: Int?
     
     override lazy var realTable: String = {
-        if let ts = table_ {
+        if let ts = tables_ {
             var rt: String = ""
             tables_.map {
                 rt.append(contentsOf: "\(dbName_).\($0)  ")
@@ -145,7 +145,7 @@ final class SqlSelect: Sql {
         if let cls = colums_ {
             tbs = cls.joined(separator: ",")
         }
-        var sql = "SELECT \(tbs) FROM  \(dbName_).\(realTable) "
+        var sql = "SELECT \(tbs) FROM  \(realTable) "
         
         sql.append(buildWhere())
         

@@ -1,5 +1,5 @@
 //
-//  AccountViewModel.swift
+//  UserViewModel.swift
 //  Architect
 //
 //  Created by  dingxiuwei on 2019/3/7.
@@ -10,7 +10,7 @@ import Foundation
 import Moya
 
 //请求分类
-enum AccountRequest {
+enum UserRequest {
     case imgCode
     case smsCode(mobile: String, code: String)
     case regist(mobile: String, pwd: String)
@@ -18,7 +18,7 @@ enum AccountRequest {
 }
 
 //请求配置
-extension AccountRequest: TargetType {
+extension UserRequest: TargetType {
     var baseURL: URL {
         return URL(string: "http://192.168.2.50:8088")!
     }
@@ -65,7 +65,7 @@ extension AccountRequest: TargetType {
 }
 
 
-let provider = MoyaProvider<AccountRequest>()
+let provider = MoyaProvider<UserRequest>()
 
 //provider.request(.login(phoneNum: 12345678901, passWord: 123456)) { result in
 //    switch result {
@@ -78,9 +78,9 @@ let provider = MoyaProvider<AccountRequest>()
 //    }
 //}
 
-//let publicParamEndpointClosure = { (target: AccountService) -> Endpoint<AccountService> in
+//let publicParamEndpointClosure = { (target: UserService) -> Endpoint<UserService> in
 //    let url = target.baseURL.appendingPathComponent(target.path).absoluteString
-//    let endpoint = Endpoint<AccountService>(url: url, sampleResponseClosure: { .networkResponse(200, target.sampleData) }, method: target.method, parameters: target.parameters, parameterEncoding: target.parameterEncoding)
+//    let endpoint = Endpoint<UserService>(url: url, sampleResponseClosure: { .networkResponse(200, target.sampleData) }, method: target.method, parameters: target.parameters, parameterEncoding: target.parameterEncoding)
 //    return endpoint.adding(newHTTPHeaderFields: ["x-platform" : "iOS", "x-interface-version" : "1.0"])
 //}
 
