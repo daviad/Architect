@@ -66,7 +66,7 @@ final class DataBaseModule: ModuleProtocl {
             if let models = module.dbModels {
                 _ = models.map { m in
                     DBHelper.shared.executionQueue.async(flags: .barrier) {
-//                        DBHelper.shared.upgradeTable(dbModel: type(of: m), dbName: AppSession.shared.accessor.role.rawValue)
+                        DBHelper.shared.upgradeTable(dbModel: type(of: m), dbName: AppSession.shared.accessor.role.rawValue)
                     }
                 }
             }

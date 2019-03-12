@@ -79,18 +79,7 @@ final class DBHelper {
         return sql
     }
     
-    func upgradeSpecific<T: Model>(modelType: T.Type, dbName: String, db: FMDatabase) {
-        let w = ["name":modelType.dbTableName]
-        let sql = Sql.select(dbName:dbName).table(DBModelVersion.dbTableName).andWhere(Array(w.keys)).build()
-        if let set = db.executeQuery(sql, withParameterDictionary: w) {
-            var results = [T]()
-            set.enumerate(modelType, &results)
-            if let version = results.first {
-                modelType.dbUpgrade(from: (version as! DBModelVersion).version, dbName: dbName, db: db)
-            }
-        }
-    }
-    
+ 
     func getDBModelVersion(dbName: String, completion: @escaping ([DBModelVersion]?)->(Void)) {
         let dao = BaseDao()
         dao.queryModel(DBModelVersion.self) { completion($0) }
@@ -102,14 +91,12 @@ final class DBHelper {
     /// - Parameters:
     ///   - dbModel: <#dbModel description#>
     ///   - dbName: <#dbName description#>
-    func upgradeTable<T: Model>(dbModel: T.Type, dbName: String) {
-
+    func upgradeTable(dbModel: DBModel.Type, dbName: String) {
         self.dbQueue.inDatabase { (db) in
-    
             let versionSql = Sql.select(dbName: dbName).table(DBModelVersion.dbTableName).build()
             var rs :FMResultSet? = nil
             
-            let task = {
+            let task = { (dbVersion: DBModelVersion?) in
                 let sql = "PRAGMA \(dbName).table_info('\(dbModel.dbTableName)')"
                 do {
                     rs = try db.executeQuery(sql, values: nil)
@@ -126,7 +113,9 @@ final class DBHelper {
                         let alterSql = "ALTER TABLE \(dbModel.dbTableName) ADD COLUMN \($0) \(dbModel.dbColumns[$0]?.rawValue ?? "") "
                         _ = try? db.executeUpdate(alterSql, values: nil)
                     }
-                    self.upgradeSpecific(modelType: dbModel, dbName: dbName, db: db)
+                    
+                    dbModel.dbUpgrade(from: dbVersion?.version ?? 0, dbName: dbName, db: db)
+
                 } catch {
                     print(db.lastErrorMessage())
                 }
@@ -141,11 +130,11 @@ final class DBHelper {
                 rs = try db.executeQuery(versionSql, values: nil)
                 if let version = rs?.arrayOfModelType(DBModelVersion.self).first {
                     if version.version != dbModel.dbVersion {
-                        task()
+                        task(version)
                         updateVersion()
                     }
                 } else {
-                    task()
+                    task(nil)
                     updateVersion()
                 }
             } catch {
