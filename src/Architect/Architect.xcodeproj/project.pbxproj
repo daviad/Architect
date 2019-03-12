@@ -236,12 +236,12 @@
 			children = (
 				B9EDAF7A22377FCD00A00E31 /* Chat */,
 				B98346442227D6DF00C4CA97 /* MainPage */,
-				B98346352227CD2E00C4CA97 /* Account */,
+				B98346352227CD2E00C4CA97 /* User */,
 			);
 			path = BusinessModule;
 			sourceTree = "<group>";
 		};
-		B98346352227CD2E00C4CA97 /* Account */ = {
+		B98346352227CD2E00C4CA97 /* User */ = {
 			isa = PBXGroup;
 			children = (
 				B939114622310E79007C7473 /* ViewModels */,
@@ -249,7 +249,7 @@
 				B9D768AE222CEC82008C5EB9 /* Models */,
 				B98346422227D3B100C4CA97 /* UserModule.swift */,
 			);
-			path = Account;
+			path = User;
 			sourceTree = "<group>";
 		};
 		B98346372227CDA500C4CA97 /* NetWorking */ = {
