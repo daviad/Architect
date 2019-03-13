@@ -217,3 +217,6 @@ TODO：关于数据库操作的顺序可以分得更细。哪些可以并行，�
 
 ## 调用方便
 关于 sql 语句的书写我封装了方法 参考[sql 语句Swift封装，链式调用](https://www.jianshu.com/p/3c0c22b36768)
+
+我简书地址：
+https://www.jianshu.com/u/eacd8cd3b992
