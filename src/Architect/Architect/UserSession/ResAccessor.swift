@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+// TODO: 改为option 枚举
 enum ResAccessRole: String {
     case Public = "pub"
     case User = "user"

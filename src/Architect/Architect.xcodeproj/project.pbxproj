@@ -40,8 +40,7 @@
 		B9D768B5222D2A84008C5EB9 /* SqlStatement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D768B4222D2A84008C5EB9 /* SqlStatement.swift */; };
 		B9D9F844222E0D6C002BDB9F /* Dictionary+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D9F843222E0D6C002BDB9F /* Dictionary+extension.swift */; };
 		B9EDAF792237434D00A00E31 /* ModelVersionDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EDAF782237434D00A00E31 /* ModelVersionDao.swift */; };
-		B9EDAF7D22377FCE00A00E31 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B9EDAF7B22377FCD00A00E31 /* README.md */; };
-		B9EDAF7E22377FCE00A00E31 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = B9EDAF7C22377FCD00A00E31 /* .gitignore */; };
+		B9EDAF8022378F3600A00E31 /* Architect.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B9EDAF7F22378F3600A00E31 /* Architect.debug.xcconfig */; };
 		B9FD6F132235F163008EE857 /* DBModelVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FD6F122235F163008EE857 /* DBModelVersion.swift */; };
 /* End PBXBuildFile section */
 
@@ -113,6 +112,7 @@
 		B9EDAF782237434D00A00E31 /* ModelVersionDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelVersionDao.swift; sourceTree = "<group>"; };
 		B9EDAF7B22377FCD00A00E31 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B9EDAF7C22377FCD00A00E31 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		B9EDAF7F22378F3600A00E31 /* Architect.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Architect.debug.xcconfig; sourceTree = "<group>"; };
 		B9FD6F122235F163008EE857 /* DBModelVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBModelVersion.swift; sourceTree = "<group>"; };
 		BCC904C2B39C77AB99876430 /* Pods-Architect.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Architect.release.xcconfig"; path = "Pods/Target Support Files/Pods-Architect/Pods-Architect.release.xcconfig"; sourceTree = "<group>"; };
 		E8431F38BFC32DE27071B9D6 /* Pods_Architect.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Architect.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,6 +172,7 @@
 		B98345FA2227C9F400C4CA97 = {
 			isa = PBXGroup;
 			children = (
+				B9EDAF7F22378F3600A00E31 /* Architect.debug.xcconfig */,
 				B9C6B1C722290EF3007C172A /* Architect-Bridging-Header.h */,
 				B98346052227C9F400C4CA97 /* Architect */,
 				B983461A2227C9F500C4CA97 /* ArchitectTests */,
@@ -502,8 +503,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9EDAF7E22377FCE00A00E31 /* .gitignore in Resources */,
-				B9EDAF7D22377FCE00A00E31 /* README.md in Resources */,
+				B9EDAF8022378F3600A00E31 /* Architect.debug.xcconfig in Resources */,
 				B98346112227C9F500C4CA97 /* LaunchScreen.storyboard in Resources */,
 				B983460E2227C9F500C4CA97 /* Assets.xcassets in Resources */,
 			);
@@ -776,7 +776,7 @@
 		};
 		B983462C2227C9F500C4CA97 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55BFE8BD262C6C7B7632ACE5 /* Pods-Architect.debug.xcconfig */;
+			baseConfigurationReference = B9EDAF7F22378F3600A00E31 /* Architect.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -796,7 +796,7 @@
 		};
 		B983462D2227C9F500C4CA97 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BCC904C2B39C77AB99876430 /* Pods-Architect.release.xcconfig */;
+			baseConfigurationReference = B9EDAF7F22378F3600A00E31 /* Architect.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
