@@ -96,6 +96,11 @@ final class DBHelper {
             let versionSql = Sql.select(dbName: dbName).table(DBModelVersion.dbTableName).build()
             var rs :FMResultSet? = nil
             
+            let updateVersion = { (dbVersion: DBModelVersion) in
+                    let replace = Sql.repace(dbName: dbName).table(DBModelVersion.dbTableName).colums(Array(DBModelVersion.dbColumns.keys)).build()
+                    db.executeUpdate(replace, withParameterDictionary: ["name": dbVersion.name, "version":dbVersion.version])
+            }
+            
             let task = { (dbVersion: DBModelVersion?) in
                 let sql = "PRAGMA \(dbName).table_info('\(dbModel.dbTableName)')"
                 do {
@@ -115,27 +120,26 @@ final class DBHelper {
                     }
                     
                     dbModel.dbUpgrade(from: dbVersion?.version ?? 0, dbName: dbName, db: db)
+                    
+                    if dbVersion == nil {
+                        updateVersion(DBModelVersion(name: dbModel.dbTableName, version: 0))
+                    }
 
                 } catch {
                     print(db.lastErrorMessage())
                 }
             }
             
-            let updateVersion = {
-                let update = Sql.insert(dbName: dbName).build()
-                try? db.executeUpdate(update, values: nil)
-            }
             
             do {
                 rs = try db.executeQuery(versionSql, values: nil)
                 if let version = rs?.arrayOfModelType(DBModelVersion.self).first {
                     if version.version != dbModel.dbVersion {
                         task(version)
-                        updateVersion()
+                        updateVersion(version)
                     }
                 } else {
                     task(nil)
-                    updateVersion()
                 }
             } catch {
                 print(db.lastErrorMessage())
@@ -145,7 +149,7 @@ final class DBHelper {
      
     }
     
-    func insertModel(_ model: Model, dbName: String, needBarrier: Bool = false, completion: ((Bool)->())?) {
+    func insertModel(_ model: Model, dbName: String, needBarrier: Bool = false, replace: Bool = false, completion: ((Bool)->())?) {
         let modelType = type(of: model)
         let columKeys: [String] = Array(modelType.dbColumns.keys)
         guard let jsonStr = model.toJSONString() else {
@@ -166,7 +170,12 @@ final class DBHelper {
                 paramDic[$0] = v
             }
         }
-        let sql = Sql.insert(dbName: dbName).table(modelType.dbTableName).colums(columKeys).build()
+        var sql: String
+        if replace {
+            sql = Sql.repace(dbName: dbName).table(modelType.dbTableName).colums(columKeys).build()
+        } else {
+            sql = Sql.insert(dbName: dbName).table(modelType.dbTableName).colums(columKeys).build()
+        }
         modify(sql: sql, paramDic: paramDic, needBarrier: needBarrier, completion: completion)
     }
     
@@ -265,7 +274,7 @@ final class DBHelper {
             }
         }
     }
-    
+    /// no where
     func queryModel<T: Model>(_ modelType: T.Type, dbName: String, completion: @escaping (([T]?)->())) {
         let sql = Sql.select(dbName: dbName).table(modelType.dbTableName).build()
         executionQueue.async {
@@ -282,31 +291,34 @@ final class DBHelper {
     }
     
     /// where dictionary(key:colum'name,value 是对应的条件值) 多个值之间用 and
-    func queryModel<T: Model>(_ modelType: T.Type, dbName: String, whereDic: [String:String], completion: (([T]?)->())?) {
+    func queryModel<T: Model>(_ modelType: T.Type, dbName: String, whereDic: [String:String], completion: @escaping (([T]?)->())) {
         let sql = Sql.select(dbName: dbName).table(modelType.dbTableName).andWhere(Array(whereDic.keys)).build()
         query(sql: sql, modelType: modelType, paramDic: whereDic, completion: completion)
     }
     
     /// where dictionary(key:colum'name,value 是对应的条件值) 多个值之间用 OR
-    func queryModel<T: Model>(_ modelType: T.Type, dbName: String, whereOrDic: [String:String], completion: (([T]?)->())?) {
+    func queryModel<T: Model>(_ modelType: T.Type, dbName: String, whereOrDic: [String:String], completion: @escaping (([T]?)->())) {
         let sql = Sql.select(dbName: dbName).table(modelType.dbTableName).orWhere(Array(whereOrDic.keys)).build()
         query(sql: sql, modelType: modelType, paramDic: whereOrDic, completion: completion)
     }
+    /// where string
+    func queryModel<T: Model>(_ modelType: T.Type, dbName: String, whereString: String, completion: @escaping (([T]?)->())) {
+        let sql = Sql.select(dbName: dbName).table(modelType.dbTableName).whereStatement(whereString).build()
+        query(sql: sql, modelType: modelType, paramDic: [String : Any](), completion: completion)
+    }
     
-    func query<T: Model>(sql: String, modelType: T.Type, paramDic: [String : Any],  completion: (([T]?)->())?) {
+    func query<T: Model>(sql: String, modelType: T.Type, paramDic: [String : Any],  completion: @escaping (([T]?)->())) {
         executionQueue.async {
             self.dbQueue.inDatabase { (db) in
-                if let completion = completion {
-                    if let set = db.executeQuery(sql, withParameterDictionary: paramDic) {
-                        let result = set.arrayOfModelType(modelType)
-                        DispatchQueue.main.async {
-                            completion(result)
-                        }
-                    } else {
-                        print(db.lastErrorMessage())
-                        DispatchQueue.main.async {
-                            completion(nil)
-                        }
+                if let set = db.executeQuery(sql, withParameterDictionary: paramDic) {
+                    let result = set.arrayOfModelType(modelType)
+                    DispatchQueue.main.async {
+                        completion(result)
+                    }
+                } else {
+                    print(db.lastErrorMessage())
+                    DispatchQueue.main.async {
+                        completion(nil)
                     }
                 }
             }

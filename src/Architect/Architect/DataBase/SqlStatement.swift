@@ -31,6 +31,10 @@ class Sql {
         return SqlInsert(dbName)
     }
     
+    static func repace(dbName: String) -> SqlReplace {
+        return SqlReplace(dbName)
+    }
+    
     static func update(dbName: String) -> SqlUpdate {
         return SqlUpdate(dbName)
     }
@@ -170,9 +174,9 @@ final class SqlSelect: Sql {
     }
 }
 
-final class SqlInsert: Sql {
+class SqlInsert: Sql {
+    lazy var sql = "INSERT INTO \(realTable)"
     override func build() -> String {
-        var sql = "INSERT INTO \(realTable)"
         if let cls = colums_ {
             var cnames = [String]()
             var values = [String]()
@@ -189,6 +193,10 @@ final class SqlInsert: Sql {
         sql.append(buildWhere())
         return sql;
     }
+}
+
+final class SqlReplace: SqlInsert {
+    override lazy var sql = "REPLACE INTO \(realTable)"
 }
 
 final class SqlUpdate: Sql {

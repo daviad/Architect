@@ -12,39 +12,56 @@ import HandyJSON
 typealias Model = HandyJSON & DBModel
 
 class BaseDao {
-    let accessor = ResAccessor.init(role: .All)
+    var accessor = ResAccessor.init(role: AppSession.shared.accessor.role)
 
-    func insertModel(_ model: Model, completion: ((Bool)->())?) {
-        DBHelper.shared.insertModel(model, dbName: accessor.role.rawValue, completion: completion)
+    func insertModel(_ model: Model, replace: Bool = false, completion: ((Bool)->())?) {
+        DBHelper.shared.insertModel(model, dbName: accessor.role.rawValue, replace: replace) { (success) in
+            DispatchQueue.main.async {
+                if let completion = completion {
+                    completion(success)
+                }
+            }
+        }
     }
     
     func deleteModel(_ model: Model, where: [String : Any], completion: ((Bool)->())?) {
-        DBHelper.shared.deleteModel(model, dbName: accessor.role.rawValue, where: `where`, completion: completion)
+        DBHelper.shared.deleteModel(model, dbName: accessor.role.rawValue, where: `where`) { (success) in
+            DispatchQueue.main.async {
+                if let completion = completion {
+                    completion(success)
+                }
+            }
+        }
     }
     
     func updateModel(_ model: (Model), completion: ((Bool)->())?) {
-        
+    
     }
     
-    
     func queryModel<T: Model>(_ modelType: T.Type, completion: @escaping (([T]?)->())) {
-        DBHelper.shared.queryModel(modelType, dbName: accessor.role.rawValue) { ([T]?) in
-            
+        DBHelper.shared.queryModel(modelType, dbName: accessor.role.rawValue) { (result) in
+            DispatchQueue.main.async { completion(result) }
         }
     }
 
     
     /// where string
-    func queryModel(_ modelType: Model.Type, where: String, completion: (([Model]?)->())?) {
-        
+    func queryModel<T: Model>(_ modelType: T.Type, where: String, completion: @escaping (([T]?)->())) {
+        DBHelper.shared.queryModel(modelType, dbName: accessor.role.rawValue, whereString: `where`) { (result) in
+             DispatchQueue.main.async { completion(result) }
+        }
     }
     /// where dictionary(key:colum'name,value 是对应的条件值) 多个值之间用 and
-    func queryModel(_ modelType: Model.Type, whereDic: [String:String], completion: (([Model]?)->())?) {
-        
+    func queryModel<T: Model>(_ modelType: T.Type, whereDic: [String:String], completion: @escaping (([T]?)->())) {
+        DBHelper.shared.queryModel(modelType, dbName: accessor.role.rawValue, whereDic: whereDic) { (result) in
+            DispatchQueue.main.async { completion(result) }
+        }
     }
-    /// where dictionary(key:colum'name,value 是对应的条件值) 多个值之间用 and
-    func queryModel(_ modelType: Model.Type, whereOrDic: [String:String], completion: (([Model]?)->())?) {
-        
+    /// where dictionary(key:colum'name,value 是对应的条件值) 多个值之间用 OR
+    func queryModel<T: Model>(_ modelType: T.Type, whereOrDic: [String:String], completion: @escaping (([T]?)->())) {
+        DBHelper.shared.queryModel(modelType, dbName: accessor.role.rawValue, whereOrDic: whereOrDic) { (result) in
+            DispatchQueue.main.async { completion(result)}
+        }
     }
     
 }
