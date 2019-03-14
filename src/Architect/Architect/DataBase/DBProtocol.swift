@@ -18,7 +18,7 @@ import Foundation
 
 protocol DBModel {
     static var dbTableName: String { get }
-    static var dbColumns: Dictionary<String, DBConstants.DataType> { get }
+    static var dbColumns: Dictionary<String, Any> { get }
     static var dbPrimaryKeys: [String]? { get }
     static var dbVersion: Int { get }
     /// 除去增加列以为数据库升级操作。（增加列底层统一处理了）

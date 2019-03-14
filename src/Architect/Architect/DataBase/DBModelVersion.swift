@@ -21,10 +21,10 @@ extension DBModelVersion: DBModel {
         return "dbversion"
     }
     
-    static var dbColumns: Dictionary<String, DBConstants.DataType> {
+    static var dbColumns: Dictionary<String, Any> {
         return [
-            "name"    : .text,
-            "version"     : .integer
+            "name"    : DBConstants.DataType.text,
+            "version" : DBConstants.DataType.integer
         ]
     }
 }

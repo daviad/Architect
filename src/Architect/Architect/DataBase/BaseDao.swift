@@ -13,7 +13,12 @@ typealias Model = HandyJSON & DBModel
 
 class BaseDao {
     var accessor = ResAccessor.init(role: AppSession.shared.accessor.role)
-
+    init(accessor_: ResAccessor) {
+        accessor = accessor_
+    }
+    init() {
+        
+    }
     func insertModel(_ model: Model, replace: Bool = false, completion: ((Bool)->())?) {
         DBHelper.shared.insertModel(model, dbName: accessor.role.rawValue, replace: replace) { (success) in
             DispatchQueue.main.async {
@@ -35,7 +40,7 @@ class BaseDao {
     }
     
     func updateModel(_ model: (Model), completion: ((Bool)->())?) {
-    
+        self.insertModel(model, replace: true, completion: completion)
     }
     
     func queryModel<T: Model>(_ modelType: T.Type, completion: @escaping (([T]?)->())) {
@@ -44,7 +49,6 @@ class BaseDao {
         }
     }
 
-    
     /// where string
     func queryModel<T: Model>(_ modelType: T.Type, where: String, completion: @escaping (([T]?)->())) {
         DBHelper.shared.queryModel(modelType, dbName: accessor.role.rawValue, whereString: `where`) { (result) in

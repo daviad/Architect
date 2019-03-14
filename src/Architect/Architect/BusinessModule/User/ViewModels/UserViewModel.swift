@@ -64,19 +64,32 @@ extension UserRequest: TargetType {
     
 }
 
+class Test {
+    let provider = MoyaProvider<UserRequest>()
+    func request() {
+        provider.request(.imgCode) { (result) in
+            print("sds")
+        }
+        
+        
+        provider.request(.regist(mobile: "12345678901", pwd: "123456")) { result in
+            switch result {
+            case let .success(response):
+                //...............
+                break
+            case let .failure(error):
+                //...............
+                break
+            }
+        }
+    }
+   
+}
 
-let provider = MoyaProvider<UserRequest>()
 
-//provider.request(.login(phoneNum: 12345678901, passWord: 123456)) { result in
-//    switch result {
-//    case let .success(response):
-//        //...............
-//        break
-//    case let .failure(error):
-//        //...............
-//        break
-//    }
-//}
+
+
+
 
 //let publicParamEndpointClosure = { (target: UserService) -> Endpoint<UserService> in
 //    let url = target.baseURL.appendingPathComponent(target.path).absoluteString

@@ -25,24 +25,27 @@ struct User: HandyJSON {
 
 extension User: DBModel {
     static var dbVersion: Int {
-        return 0
+        return 3
     }
     
     static var dbTableName: String {
         return "user"
     }
     
-    static var dbColumns: Dictionary<String, DBConstants.DataType> {
+    static var dbColumns: Dictionary<String, Any> {
         return [
-            "id"      : .integer,
-            "name"    : .text,
-            "age"     : .integer,
-            "gender"  : .integer,
-            "vip"     : .bool
+            "id"        : [DBConstants.DataType.integer,DBConstants.DataType.PrimaryKey],
+            "name"      : DBConstants.DataType.text,
+            "age"       : DBConstants.DataType.integer,
+            "gender"    : DBConstants.DataType.integer,
+            "vip"       : DBConstants.DataType.bool,
+            "test"      : DBConstants.DataType.text,
+            "test2"     : DBConstants.DataType.text
+
         ]
     }
-    static var dbPrimaryKeys: [String]? {
-        return ["id"]
-    }
+//    static var dbPrimaryKeys: [String]? {
+//        return ["id"]
+//    }
 
 }
