@@ -19,8 +19,8 @@ protocol ModuleProtocl {
 }
 
 extension ModuleProtocl {
+     func load() {}
     func setup() {}
-    func load() {}
     var dbModels: [DBModel]? { return nil }
 }
 

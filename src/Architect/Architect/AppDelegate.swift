@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+//import GodEye
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -19,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         ModuleManager.shared.loadModules()
+//        GodEye.makeEye(with: self.window!)
+        
         return true
     }
 

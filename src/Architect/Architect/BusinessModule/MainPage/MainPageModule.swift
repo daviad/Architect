@@ -10,12 +10,12 @@ import Foundation
 import UIKit
 class MainPageModule: ModuleProtocl {
     func load() {
-       enterApp()
+//       enterApp()
     }
     func enterApp() {
         let appdele = UIApplication.shared.delegate as! AppDelegate
-//        appdele.window?.rootViewController = UINavigationController.init(rootViewController: RootViewController())
-        appdele.window?.rootViewController = RootViewController()
+        appdele.window?.rootViewController = UINavigationController.init(rootViewController: RootViewController())
+//        appdele.window?.rootViewController = RootViewController()
         
     }
 }

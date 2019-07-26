@@ -2,19 +2,24 @@ platform :ios, "9.0"
 
 workspace '../../ArchitectWorkspace'
 
-# use_frameworks!
+ use_frameworks!
 
 target 'Architect' do
     pod 'HandyJSON', '~> 4.2.0'
     pod 'Moya', '~> 12.0'
+    pod 'SnapKit'
+     pod 'RxSwift', '4.3.0'
+     pod 'RxCocoa', '4.3.0'
+#    pod 'GodEye'
+#    pod 'Codextended'
 end
 
 target 'ArchitectTests' do
-    pod 'HandyJSON', '~> 4.2.0'
-    pod 'Moya', '~> 12.0'
+#    pod 'HandyJSON', '~> 4.2.0'
+#    pod 'Moya', '~> 12.0'
 end
 
 target 'ArchitectUITests' do
-    pod 'HandyJSON', '~> 4.2.0'
-    pod 'Moya', '~> 12.0'
+#    pod 'HandyJSON', '~> 4.2.0'
+#    pod 'Moya', '~> 12.0'
 end
